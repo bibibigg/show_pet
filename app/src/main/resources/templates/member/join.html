@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="icon" href="/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>회원가입 영역</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One%3A400"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee%3A400"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A700"/>
+  <link rel="stylesheet" th:href="@{/css/join.css}"/>
+</head>
+<body>
+<div calss="main">
+  <form action="add" method="post" onsubmit="return validatePassword();">
+    <div class="item--이메일">
+      <p class="showpet-WBb">ShowPet</p>
+      <div class="item--DLu">
+        <label for="email" class="item--8im">이메일</label>
+        <div class="item--F2h">
+          <input type="email" id="email" name='email' class="item--zFB" placeholder="이메일을 입력해주세요">
+          <div class="item--GyP">
+          </div>
+        </div>
+      </div>
+      <div class="item--비밀번호1">
+        <label for="password" class="item--uFf">비밀번호</label>
+        <div class="item--dSZ">
+          <input type="password" id="password" name='password' class="item--AhP"
+                 placeholder="비밀번호를 입력해 주세요">
+          <div class="item--f8M">
+          </div>
+        </div>
+        <div class="item--비밀번호2">
+          <input type="password" id="confirmPassword" class="item--VdB"
+                 placeholder="비밀번호를 한번더 입력해 주세요">
+        </div>
+      </div>
+      <div class="item--닉네임">
+        <label for="nickname" class="item--euP">닉네임</label>
+        <div class="item--AMw">
+          <input type="text" id="nickname" name='nickName' placeholder="닉네임을 입력해 주세요">
+        </div>
+      </div>
+
+
+      <!--      휴대폰번호 인증부분-->
+      <div id="phoneVerificationModal">
+        <form action="/sms/send" method="POST">
+          <div class="item--휴대폰번호인증">
+            <p style="font-size: 18px">전화번호 인증</p>
+            <p style="font-size: 16px; margin-bottom: 10px">전화번호를 입력하고 인증 코드를 받으세요.</p>
+            <div class="item--Pw1" style="margin-right: 20px">
+
+              <!-- 전화번호 입력 필드 추가 --><!-- 인증 코드 전송 버튼 -->
+              <input type="text" id="phoneNumber" name="to" placeholder="휴대폰 번호 입력"
+                     style="width: 250px; height: 25px">
+              <button class="Pwbutton" type="button" id="sendVerificationCode">인증 받기</button>
+            </div>
+            <br>
+            <!-- 인증 코드 입력 필드와 확인 버튼 추가 -->
+            <div class="item--Pw1">
+              <input type="text" id="verificationCode" placeholder="인증 코드 입력"
+                     style="width: 250px; height: 25px">
+              <button class="Pwbutton" type="button" id="confirmVerificationCode">확인</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="item--휴대폰번호" style="margin-top: 20px">
+        <label for="nickname" class="item--Pw">전화 번호 확인</label>
+        <div class="item--Pw1">
+          <input type="text" id="tel" name='tel' placeholder="전화번호 인증을 받으세요" readonly>
+        </div>
+      </div>
+
+
+      <div class="pet--pet">
+        <label for="petName" class="pet--BH3" style="margin-top: 20px">카테고리 선택</label>
+        <div class="pet--i25">
+          <select id="petName" name='category'>
+            <option value='2'>강아지</option>
+            <option value='3'>고양이</option>
+            <option value='4'>새</option>
+            <option value='1'>기타</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="item--로그인하기">회원가입 하기</button>
+      <p class="item--Qp1">
+        <span class="item--Qp1-sub-0">이미 회원이신가요? </span>
+        <span class="item--Qp1-sub-1" id="goToLogin">로그인하기</span>
+      </p>
+    </div>
+  </form>
+</div>
+<script th:src="@{/js/phoneNumber.js}"></script>
+<script>
+  // "인증 코드 전송" 버튼 클릭 시 AJAX 요청을 통해 데이터를 서버로 전송
+  document.getElementById("sendVerificationCode").addEventListener("click", function () {
+    var phoneNumber = document.getElementById("phoneNumber").value;
+    var verificationCode; // 인증 코드 변수 선언
+
+    // AJAX 요청 생성 및 전송
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sms/send-and-generate-verification-code", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    // 메시지 DTO 생성
+    var messageDto = {
+      to: phoneNumber,
+      content: "" // 내용은 여기에 추가할 필요 없습니다.
+    };
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // 성공적으로 요청이 처리됐을 때 실행할 코드
+        var response = JSON.parse(xhr.responseText);
+        verificationCode = response.verificationCode; // 서버에서 받은 인증 코드 저장
+        console.log("인증 코드를 서버에서 받았습니다:", verificationCode);
+
+        // 모달 열기
+        document.getElementById("phoneVerificationModal").style.display = "block";
+      }
+    };
+
+    // JSON 형식으로 메시지 DTO를 전송
+    xhr.send(JSON.stringify(messageDto));
+
+    // "확인" 버튼 클릭 시 모달 닫기 및 인증 처리
+    document.getElementById("confirmVerificationCode").addEventListener("click", function () {
+      // 여기에서 사용자가 입력한 인증 코드를 가져옵니다.
+      var userVerificationCode = document.getElementById("verificationCode").value;
+
+      // 서버에서 받은 인증 코드와 사용자가 입력한 인증 코드 비교
+      if (userVerificationCode === verificationCode) {
+        // 인증 성공 메시지 표시
+        alert("인증이 성공했습니다.");
+
+        // 전화번호 입력 필드에 값 설정
+        var telInput = document.getElementById("tel");
+        telInput.value = phoneNumber; // phoneNumber 변수에 전화번호가 저장되어 있어야 합니다.
+        // 모달 닫기
+        // document.getElementById("phoneVerificationModal").style.display = "none";
+      } else {
+        // 인증 실패 메시지 표시
+        alert("인증이 실패했습니다. 올바른 인증 코드를 입력하세요.");
+      }
+    });
+  });
+
+  // "로그인하기" 텍스트 클릭 시 login.html로 이동
+  document.getElementById("goToLogin").addEventListener("click", function () {
+    window.location.href = "login";
+  });
+
+  function validatePassword() {
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (password !== confirmPassword) {
+      alert("비밀번호를 확인해 주세요.");
+      return false; // 회원가입 중단
+    }
+
+    return true; // 비밀번호가 일치하면 회원가입 진행
+  }
+</script>
+</body>
+</html>

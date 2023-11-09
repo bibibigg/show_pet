@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="icon" href="/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>검색 헤더</title>
+  <link rel="stylesheet" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" th:href="@{/css/modal.css}"/>
+</head>
+<body>
+<div data-th-fragment="header">
+  <div class="header-container">
+    <a class="logo-link" href="/post/list"><p class="showpet-logo">ShowPet</p></a>
+    <form action="" method='get'>
+      <div class="search-container">
+        <input type='search' id="search" name='search' class="search" placeholder='검색어를 입력해주세요.'
+               value=''>
+        <button type="submit" class="search-button">검색</button>
+      </div>
+      <!--            <input type='hidden' name='category' value='${param.category}'>-->
+    </form>
+
+    <img id="alarmIcon" class="alarm" data-th-if="${session.loginUser != null}"
+         th:src="@{/images/alarm.png}"/>
+
+    <!-- 헤더 알림 -->
+    <div id="headerNotificationModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeHeaderNotificationModal()">&times;</span>
+        <h2>받은 알림</h2>
+        <button id="deleteAllNotificationsButton" class="btn btn-danger">전체 삭제</button>
+        <ul id="notificationList">
+          <li th:each="notification : ${notifications}">
+            <span th:text="${notification.content}"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <a href="/member/form" data-th-if="${session.loginUser == null}">
+      <button class="login-button" style="margin-left: 192px">로그인</button>
+    </a>
+    <a href="/member/join" data-th-if="${session.loginUser == null}">
+      <button class="login-button">회원가입</button>
+    </a>
+    <div class="fix-container" data-th-if="${session.loginUser != null}">
+      <div class="round-image">
+        <a data-th-href="@{'/member/profile/' + ${session.loginUser.getId()}}">
+          <img style="width: 50px; height: 50px;"
+               data-th-if="${session.loginUser.getPhoto() == null}" th:src="@{/images/avatar.png}"></a>
+
+        <a data-th-href="@{'/member/profile/' + ${session.loginUser.getId()}}">
+          <img data-th-if="${session.loginUser.getPhoto() != null}"
+               data-th-src="|https://kr.object.ncloudstorage.com/bitcamp-nc7-bucket-16/member/${session.loginUser.getPhoto()}|"></a>
+      </div>
+      <span style="margin-right: 40px" data-th-text="${session.loginUser.getNickName()}"></span>
+      <a data-th-href="@{/post/form(category=${param.category})}">
+        <button class="login-button">글쓰기</button>
+      </a>
+      <a href="/member/logout">
+        <button class="login-button">로그아웃</button>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

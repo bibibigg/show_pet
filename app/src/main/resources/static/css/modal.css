@@ -1,0 +1,87 @@
+/* 모달 스타일 */
+.modal {
+  display: none; /* 초기에는 숨겨진 상태 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* 반투명 배경색 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+/* 모달 내용 스타일 */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 가운데 정렬 */
+  width: 500px; /* 모달창의 너비를 500px로 설정 */
+  max-height: 500px; /* 모달창의 최대 높이를 500px로 설정 */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+  overflow-y: auto; /* 내용이 모달 내에서 넘칠 때 스크롤 추가 */
+}
+
+/* 모달 닫기 버튼 스타일 */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: #000000;
+  cursor: pointer;
+}
+
+/* 목록 스타일 */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/* 제목 스타일 */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#deleteAllNotificationsButton {
+  width: 500px;
+  height: 38px;
+  color: #fff;
+  background-color: #504e4d;
+  border-color: #e04000;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* 호버 효과를 부드럽게 만들기 위한 트랜지션 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+#deleteAllNotificationsButton:hover {
+  background-color: #f05400; /* 호버 시 배경색 변경 */
+  transform: translateY(-2px); /* 버튼을 아래로 조금 이동하여 돌출 효과 */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강화 */
+}
+
+/* 선택한 버튼을 누르고 있을 때 더 깊게 들어간 느낌을 주기 위한 스타일 */
+#deleteAllNotificationsButton:active {
+  transform: translateY(0); /* 다시 원래 위치로 돌아가게 함 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 더 가벼운 그림자 효과 */
+}

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <title>ShowPet</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One%3A400"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee%3A400"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A700"/>
+  <link rel="stylesheet" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/post_form.css}"/>
+  <link rel="stylesheet" th:href="@{/css/modal.css}"/>
+  <style>
+    /* 스타일 추가 */
+    .post-box {
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      padding: 20px;
+      width: 50%; /* 가로 정렬 수정 */
+      margin: 0 auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px; /* 크기를 조정하세요 */
+    }
+
+    /* + 버튼 컨테이너 스타일 */
+    .file-input-container {
+      position: relative;
+      display: inline-block; /* 가로로 나열 */
+      width: 100px; /* 가로 크기 100px로 고정 */
+      height: 100px; /* 세로 크기 100px로 고정 */
+    }
+
+    /* + 버튼 스타일 */
+    .file-input-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    /* 파일 선택 버튼 숨기기 */
+    .file-input-container input[type="file"] {
+      display: none;
+    }
+
+    /* 이미지 미리보기 스타일 */
+    .preview-image {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      margin: auto;
+      width: 100px; /* 이미지를 컨테이너에 맞게 조정하는 부분 */
+      height: 100px; /* 이미지를 컨테이너에 맞게 조정하는 부분 */
+    }
+
+    /* 미리보기 숨기기 스타일 */
+    .hidden {
+      display: none;
+    }
+
+    /* 미리보기 삭제 버튼 스타일 */
+    .delete-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: rgba(255, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      line-height: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px; /* 작은 크기로 조정 */
+    }
+
+    .input-button {
+      background-color: #504e4d;
+      border: none;
+      color: white;
+      width: 120px;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 16px;
+      font-size: 16px !important;
+      transition: background-color 0.3s ease, transform 0.3s ease; /* 호버 효과를 부드럽게 만들기 위한 트랜지션 */
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    }
+
+    .input-button:hover {
+      background-color: #f05400; /* 호버 시 배경색 변경 */
+      transform: translateY(-2px); /* 버튼을 아래로 조금 이동하여 돌출 효과 */
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강화 */
+    }
+
+    /* 선택한 버튼을 누르고 있을 때 더 깊게 들어간 느낌을 주기 위한 스타일 */
+    .input-button:active {
+      transform: translateY(0); /* 다시 원래 위치로 돌아가게 함 */
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 더 가벼운 그림자 효과 */
+    }
+
+  </style>
+</head>
+<body>
+<div data-th-replace="header :: header"></div>
+<div class="post-box">
+  <h1>글쓰기</h1>
+  <form data-th-action="@{/post/add}" method='post' enctype='multipart/form-data'
+        onsubmit="return validateForm()">
+    <div class="form-group">
+      <label for="title">제목</label>
+      <input type='text' id="title" name='title'>
+    </div>
+    <div class="form-group">
+      <label for="content">내용</label>
+      <textarea id="content" name='content'></textarea>
+    </div>
+    <div class="form-group">
+      <label for="hashtag">해시태그</label>
+      <input type='text' id="hashtag" name='hashtag'>
+    </div>
+    <div>
+
+      <div class="file-input-container">
+        <input type="file" id="files" name="files" multiple>
+        <label class="file-input-label" for="files">+</label>
+        <div class="file-preview0"></div> <!-- 이미지 미리보기 컨테이너 -->
+        <button class="hidden delete-button" type="button" id="clear-preview0">x</button>
+      </div>
+
+
+      <div class="file-input-container">
+        <input type="file" id="files1" name="files" multiple>
+        <label class="file-input-label" for="files1">+</label>
+        <div class="file-preview1"></div> <!-- 이미지 미리보기 컨테이너 -->
+        <button class="hidden delete-button" type="button" id="clear-preview1">x</button>
+      </div>
+
+
+      <div class="file-input-container">
+        <input type="file" id="files2" name="files" multiple>
+        <label class="file-input-label" for="files2">+</label>
+        <div class="file-preview2"></div> <!-- 이미지 미리보기 컨테이너 -->
+        <button class="hidden delete-button" type="button" id="clear-preview2">x</button>
+      </div>
+
+
+      <div class="file-input-container">
+        <input type="file" id="files3" name="files" multiple>
+        <label class="file-input-label" for="files3">+</label>
+        <div class="file-preview3"></div> <!-- 이미지 미리보기 컨테이너 -->
+        <button class="hidden delete-button" type="button" id="clear-preview3">x</button>
+      </div>
+
+      <div class="file-input-container">
+        <input type="file" id="files4" name="files" multiple>
+        <label class="file-input-label" for="files4">+</label>
+        <div class="file-preview4"></div> <!-- 이미지 미리보기 컨테이너 -->
+        <button class="hidden delete-button" type="button" id="clear-preview4">x</button>
+      </div>
+    </div>
+
+
+    <script>
+      // + 버튼 클릭 시 미리보기 기능 동작
+      const fileInputIds = ['files', 'files1', 'files2', 'files3', 'files4'];
+
+      function validateForm() {
+        let allFilesEmpty = true; // 모든 파일 입력 필드가 비어있는지 여부를 판단하는 변수
+
+        // 각 파일 입력 필드에 대한 검증
+        for (let i = 0; i < fileInputIds.length; i++) {
+          const inputId = fileInputIds[i];
+          const filesInput = document.getElementById(inputId);
+          const files = filesInput.files;
+
+          if (files.length > 0) {
+            allFilesEmpty = false; // 파일이 하나라도 등록되었으면 allFilesEmpty를 false로 설정
+          }
+        }
+
+        if (allFilesEmpty) {
+          alert('파일을 1장 이상 추가해주세요.');
+          return false; // 폼 제출 중단
+        }
+
+        // 파일 선택이 되었을 경우에는 폼 제출을 계속 진행
+        return true;
+      }
+
+      for (let i = 0; i < fileInputIds.length; i++) {
+        const inputId = fileInputIds[i];
+        const previewContainer = document.querySelector(`.file-preview${i}`);
+        const clearButton = document.querySelector(`#clear-preview${i}`);
+
+        document.getElementById(inputId).addEventListener('change', function (e) {
+          previewContainer.innerHTML = ''; // 미리보기 컨테이너 초기화
+
+          const files = e.target.files;
+          for (let j = 0; j < files.length; j++) {
+            const file = files[j];
+            if (file.type.startsWith('image/')) {
+              const reader = new FileReader();
+
+              reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.className = 'preview-image';
+                img.src = e.target.result;
+                previewContainer.appendChild(img);
+
+                // + 텍스트 숨기기
+                const fileInputLabel = document.querySelector(`[for="${inputId}"]`);
+                fileInputLabel.style.display = 'none';
+
+                // 미리보기 삭제 버튼 보이기
+                clearButton.classList.remove('hidden');
+              };
+
+              reader.readAsDataURL(file);
+            }
+          }
+        });
+
+        // 미리보기 삭제 버튼 클릭 시
+        clearButton.addEventListener('click', function () {
+          previewContainer.innerHTML = ''; // 미리보기 컨테이너 초기화
+
+          // + 텍스트 보이기
+          const fileInputLabel = document.querySelector(`[for="${inputId}"]`);
+          fileInputLabel.style.display = 'block';
+
+          // 미리보기 삭제 버튼 숨기기
+          clearButton.classList.add('hidden');
+
+          // 파일 선택 버튼 초기화
+          const fileInput = document.getElementById(inputId);
+          fileInput.value = ''; // 파일 선택 버튼 값 초기화
+        });
+      }
+    </script>
+
+    <div class="form-group">
+      <label for="category">카테고리</label>
+      <select id="category" name='category'>
+        <option value='2'>강아지</option>
+        <option value='3'>고양이</option>
+        <option value='4'>새</option>
+        <option value='1'>기타</option>
+      </select>
+    </div>
+    <button class="input-button">등록</button>
+  </form>
+  <script th:src="@{/js/header.js}"></script>
+</body>
+</html>

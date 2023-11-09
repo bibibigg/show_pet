@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <title>ShowPet</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="/js/header.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One%3A400"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee%3A400"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A700"/>
+  <link rel="stylesheet" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/list.css}"/>
+  <link rel="stylesheet" th:href="@{/css/modal.css}"/>
+</head>
+<body>
+
+<div data-th-replace="header :: header"></div>
+
+<h1>기타</h1>
+<div style='margin:5px;'>
+  <button class="button" type="button" onclick="location.href='/post/list'">전체보기</button>
+  <button class="button" type="button" onclick="location.href='/post/listDog'">강아지</button>
+  <button class="button" type="button" onclick="location.href='/post/listCat'">고양이</button>
+  <button class="button" type="button" onclick="location.href='/post/listBird'">새</button>
+  <button class="button" type="button" onclick="location.href='/post/listEtc'"
+          style="background-color: #f05400">기타
+  </button>
+</div>
+<div class="square-box">
+  <!-- 내 게시물 -->
+  <th:block th:each="post : ${listEtc}">
+    <div th:if="${searchKeyword == null or #strings.containsIgnoreCase(post.title, searchKeyword)}">
+      <div th:if="${post.attachedFiles != null && !post.attachedFiles.isEmpty()}">
+        <div class="image-thumbnail">
+          <a th:href="@{'/post/detail/' + ${post.category} + '/' + ${post.id}}">
+            <img
+                    th:src="@{|https://kr.object.ncloudstorage.com/bitcamp-nc7-bucket-16/post/${post.attachedFiles[0].filePath}|}"
+                    alt="...">
+          </a>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</div>
+<script th:src="@{/js/header.js}"></script>
+</body>
+</html>

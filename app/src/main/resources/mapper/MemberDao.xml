@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.show_pet.member.model.dao.MemberDao">
+
+    <resultMap type="member" id="memberMap">
+        <id     column="member_id"        property="id"/>
+        <result column="role"           property="role"/>
+        <result column="activation"     property="activation"/>
+        <result column="email"          property="email"/>
+        <result column="password"       property="password"/>
+        <result column="nickname"       property="nickName"/>
+        <result column="photo"          property="photo"/>
+        <result column="intro"          property="intro"/>
+        <result column="category"       property="category"/>
+        <result column="tel"            property="tel"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="member">
+        insert into member (email, password, nickname, category, tel)
+        values(#{email}, sha1(#{password}), #{nickName}, #{category}, #{tel})
+    </insert>
+
+    <select id="findAll" resultMap="memberMap">
+        select
+            member_id,
+            role,
+            activation,
+            email,
+            nickname,
+            photo,
+            intro,
+            category,
+            tel
+        from
+            member
+        order by
+            role asc
+    </select>
+
+    <select id="findBy" parameterType="int" resultMap="memberMap">
+        select
+            member_id,
+            role,
+            activation,
+            email,
+            nickname,
+            photo,
+            intro,
+            category,
+            tel
+        from
+            member
+        where
+            member_id=#{id}
+    </select>
+
+
+    <select id="findByEmailAndPassword" resultMap="memberMap">
+        select
+            *
+        from
+            member
+        where
+            email=#{email}
+            and password=sha1(#{password})
+    </select>
+
+    <update id="update" parameterType="member">
+        update member set
+            nickname=#{nickName}
+            ,password=sha1(#{password})
+            ,intro=#{intro}
+            <if test="photo != null">
+                ,photo=#{photo}
+            </if>
+            ,tel=#{tel}
+        where
+            member_id=#{id}
+    </update>
+
+
+    <delete id="delete" parameterType="int">
+        delete from member
+        where
+        member_id=#{id}
+    </delete>
+
+    <insert id="insertFollow">
+        INSERT INTO follow (follower_member_id, following_member_id)
+        VALUES (#{followerId}, #{followingId})
+    </insert>
+
+    <delete id="deleteFollow">
+        DELETE FROM follow
+        WHERE follower_member_id=#{followerId} AND following_member_id=#{followingId}
+    </delete>
+
+    <select id="isFollowed" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM follow
+        WHERE follower_member_id=#{followerId} AND following_member_id=#{followingId}
+    </select>
+
+    <select id="getFollowers" resultType="map">
+        SELECT m.nickname AS nickName, m.photo
+        FROM follow f
+        JOIN member m ON f.follower_member_id = m.member_id
+        WHERE f.following_member_id=#{memberId}
+    </select>
+
+    <select id="getFollowings" resultType="map">
+        SELECT m.nickname AS nickName, m.photo
+        FROM follow f
+        JOIN member m ON f.following_member_id = m.member_id
+        WHERE f.follower_member_id=#{memberId}
+    </select>
+
+    <insert id="insertNotification">
+        INSERT INTO notification (member_id, content, created_at, type, isRead)
+        VALUES (#{memberId}, #{content}, NOW(), #{type}, #{isRead})
+    </insert>
+
+    <select id="findNotificationsByMemberId" resultType="bitcamp.show_pet.member.model.vo.Notification">
+        SELECT * FROM notification WHERE member_id = #{memberId}
+    </select>
+
+    <update id="updateReadStatus">
+        UPDATE notification SET isRead = #{isRead} WHERE id = #{id}
+    </update>
+
+    <insert id="saveNotification" parameterType="bitcamp.show_pet.member.model.vo.Notification">
+        INSERT INTO notification (member_id, content, created_at, type, isRead)
+        VALUES (#{memberId}, #{content}, #{createdAt}, #{type}, #{isRead})
+    </insert>
+
+    <delete id="deleteAllNotifications" parameterType="int">
+        DELETE FROM notification WHERE member_id=#{memberId}
+    </delete>
+
+</mapper>

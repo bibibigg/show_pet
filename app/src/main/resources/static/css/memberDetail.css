@@ -1,0 +1,261 @@
+#imagePreview {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+#imagePreview img {
+  width: 100%;
+  height: 100%; /* 이미지를 박스에 꽉 채우도록 설정합니다. */
+  border-radius: 50%;
+  object-fit: cover; /* 이미지 비율을 유지하면서 박스에 맞춥니다. */
+}
+
+.update-container {
+  box-sizing: border-box;
+  padding: 3.8rem 3.8rem 1rem 3.8rem;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+}
+
+.upload-container {
+  justify-content: center; /* 세로 중앙 정렬을 위한 추가 코드 */
+  align-items: center; /* 내용을 세로 중앙에 정렬 */
+}
+
+.profile-container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.reset-container {
+  display: flex; /* Flexbox를 활성화합니다. */
+  justify-content: center; /* 가로 정렬을 중앙에 설정합니다. */
+  align-items: center; /* 세로 정렬을 중앙에 설정합니다. */
+}
+
+.profile-round-image {
+  border-radius: 50%; /* 동그라미 모양으로 만듭니다. */
+  overflow: hidden; /* 넘치는 부분을 숨깁니다. */
+  width: 200px; /* 이미지의 너비 조정 */
+  height: 200px; /* 이미지의 높이 조정 */
+  margin-bottom: 50px;
+  margin-left: 7rem;
+}
+
+.profile-round-image img {
+  width: 100%; /* 이미지를 박스에 꽉 채우도록 설정합니다. */
+  height: 100%; /* 이미지를 박스에 꽉 채우도록 설정합니다. */
+  object-fit: cover; /* 이미지 비율을 유지하면서 박스에 맞춥니다. */
+}
+
+.profile-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; /* 동그라미 모양으로 설정 */
+}
+
+.preview-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* 미리보기 영역의 배경색과 투명도 설정 */
+  border-radius: 50%;
+}
+
+.profile-round-image:hover .preview-container {
+  opacity: 1;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+button[type='reset'],
+a[href='../post/list'] {
+  display: inline-block;
+  margin-right: 10px; /* 원하는 간격 설정 */
+}
+
+.reset-button {
+  background-color: #504e4d;
+  color: white;
+  text-align: center;
+  width: 8rem;
+  height: 3rem;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 16px;
+}
+
+.reset-button:hover {
+  background-color: #f05400;
+}
+
+/* 사용자 정의 스타일을 가진 버튼 */
+.edit-profile-button {
+  background-color: #504e4d;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 16px;
+}
+
+.edit-profile-button:hover {
+  background-color: #f05400;
+}
+
+.button-box {
+  margin-top: 3.9633rem;
+  margin-bottom: 1rem;
+  width: 45rem;
+  height: 5.966rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #ffffff;
+  font-family: ABeeZee, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.4rem 1.9rem rgba(119, 147, 65, 0.3000000119);
+  background-color: #f05400;
+  border-radius: 1rem;
+  flex-shrink: 0;
+  border: none; /* 테두리 제거 */
+  cursor: pointer; /*회원가입 하기에 마우스올릴시 포인터 변경*/
+}
+
+/*.input-box {*/
+/*    width: 200px; !* 입력 필드의 너비 조정 *!*/
+/*    height: 30px; !* 입력 필드의 높이 조정 *!*/
+/*    font-size: 16px;*/
+/*    font-weight: 700;*/
+/*    color: #000000;*/
+/*    font-family: ABeeZee, 'Source Sans Pro';*/
+/*    display: inline-block;*/
+/*    vertical-align: middle; !* 세로 가운데 정렬 추가 *!*/
+/*}*/
+
+.input-box {
+  width: 400px;
+  height: 48px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+  font-family: ABeeZee, 'Source Sans Pro';
+  border-radius: 1rem;
+  flex-shrink: 0;
+  margin-bottom: 30px;
+  vertical-align: middle;
+  border: 1px solid #d3d3d3; /* 검은색 테두리 추가 */
+  transition: border-color 0.3s; /* 테두리 색상 변화에 트랜지션 적용 */
+}
+
+.password-box {
+  width: 400px;
+  height: 48px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+  font-family: ABeeZee, 'Source Sans Pro';
+  border-radius: 1rem;
+  flex-shrink: 0;
+  margin-bottom: 30px;
+  vertical-align: middle;
+  border: 1px solid #d3d3d3; /* 검은색 테두리 추가 */
+  transition: border-color 0.3s; /* 테두리 색상 변화에 트랜지션 적용 */
+}
+
+.text-box {
+  width: 536px;
+  height: 120px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #000000;
+  font-family: ABeeZee, 'Source Sans Pro';
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: top;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  flex-shrink: 0;
+  margin-bottom: 30px;
+  border: 1px solid #d3d3d3; /*테두리 추가 */
+  resize: none;
+  transition: border-color 0.3s; /* 테두리 색상 변화에 트랜지션 적용 */
+}
+
+
+.text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+  font-family: Rammetto One, 'Source Sans Pro';
+  vertical-align: top;
+}
+
+.intro-box {
+  width: 100%;
+  font-size: 25px;
+  font-weight: 700;
+  color: #000000;
+  font-family: ABeeZee, 'Source Sans Pro';
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: 30px;
+  resize: none;
+  text-align: center;
+}
+
+.intro-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+  font-family: Rammetto One, 'Source Sans Pro';
+  vertical-align: top;
+}
+
+.pet-category {
+  width: 400px;
+  height: 48px;
+  border-radius: 1rem;
+  border: 1px solid #d3d3d3; /* 선택되지 않은 상태의 테두리 색상 */
+  transition: border-color 0.3s; /* 테두리 색상 변화에 트랜지션 적용 */
+
+  color: #000;
+}
+
+/* 선택되었을 때의 스타일 */
+.pet-category:focus {
+  border-color: black; /* 선택될 때 테두리 색상 변경 */
+  background-color: white; /* 선택될 때 배경색 변경 */
+  color: #000; /* 선택될 때 글자색 변경 */
+  cursor: auto; /* 선택될 때 기본 커서 모양으로 변경 */
+}
+

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>비밀번호 재설정</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 50px;
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+
+      border-radius: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button[type="submit"] {
+      background-color: #f05400;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .success-message, .error-message {
+      margin: 400px;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 50px;
+    }
+
+    .success-message p, .error-message p {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .item--이메일 .showpet-WBb {
+      margin: 0;
+      margin-top: 40px;
+      font-size: 4rem;
+      font-weight: 400;
+      line-height: 1.69;
+      color: #f05400;
+      font-family: Rammetto One, 'Source Sans Pro';
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One%3A400"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee%3A400"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A700"/>
+</head>
+<body>
+<div class="item--이메일">
+<p class="showpet-WBb">ShowPet</p>
+</div>
+<h1>비밀번호 재설정</h1>
+<form data-th-action="@{/findpw/reset}" method="post">
+  <label for="email"></label>
+  <input type="email" id="email" name='email' class="item--zFB" placeholder="이메일을 입력해주세요">
+  <button type="submit">비밀번호 재설정</button>
+</form>
+
+<!-- 성공 또는 오류 메시지 표시-->
+<div data-th-if="${successMessage}" class="success-message">
+  <p data-th-text="${successMessage}"></p>
+  <a data-th-href="@{/member/form}">로그인 페이지로 돌아가기</a>
+</div>
+<div data-th-if="${errorMessage}" class="error-message">
+  <p data-th-text="${errorMessage}"></p>
+  <a data-th-href="@{/member/form}">로그인 페이지로 돌아가기</a>
+</div>
+
+
+
+</body>
+</html>

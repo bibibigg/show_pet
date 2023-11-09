@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="icon" href="/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>ShowPet : sign in</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One%3A400"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A300%2C400%2C600%2C700"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Poppins%3A300%2C400%2C600%2C700"/>
+  <link rel="stylesheet" href="/static/css/form.css">
+  <link rel="stylesheet" th:href="@{/css/form.css}"/>
+
+  <style>
+    button {
+      border: none; /* 버튼 테두리 없애기 */
+      padding: 0; /* 버튼 내부 여백 없애기 */
+      background-color: transparent; /* 버튼의 배경색을 투명으로 설정 */
+    }
+
+    .item--HHB {
+      border: none; /* div 요소의 테두리 없애기 */
+      width: 49.6691rem; /* div 요소의 너비를 "로그인하기"와 같게 설정 */
+      display: inline-block;
+    }
+  </style>
+
+</head>
+
+<body>
+<div class="item-1--BzH">
+  <div class="group-1-93w">
+    <div class="group-2-bq3">
+      <div class="item--hdB">
+        <div class="showpet-RZB">ShowPet</div>
+        <p class="sns-fCd">내 반려동물과 함께하는 SNS</p>
+      </div>
+      <img src="/static/images/dog.png" th:src="@{/images/dog.png}"/>
+    </div>
+
+    <div class="item--RLD">
+      <div class="auto-group-rnrv-orZ">
+        <p class="item--vAV">로그인</p>
+        <p class="item--DQV">
+                    <span class="item--DQV-sub-0">
+                        계정이 없으신가요?
+                        <br/>
+                    </span>
+          <span class="item--DQV-sub-1" id="goToRegister">회원가입하기</span>
+
+        </p>
+      </div>
+
+
+      <form action='login' method='post'>
+        <div class="item--HBP">
+          <p class="item--PVK">이메일</p>
+          <div class="auto-group-a4bj-6ed">
+            <label>
+              <input type='email' name='email' placeholder="이메일을 입력하세요" data-th-value='${email}'>
+            </label>
+          </div>
+        </div>
+
+        <div class="group-4-Xzq">
+          <div class="item--pyw">
+            <p class="enter-your-password-A2D">비밀번호</p>
+            <div class="auto-group-9kb3-z9f">
+              <input type='password' name='password' placeholder="비밀번호를 입력하세요">
+            </div>
+          </div>
+
+          <p class="item--pPb">
+            <a href="/findpw/reset">비밀번호 찾기</a>
+            <br/>
+          </p>
+        </div>
+
+        <button onclick="redirectToIndex()">
+          <div class="item--HHB" style="width: 49.6691rem">로그인하기</div>
+        </button>
+      </form>
+
+      <div class="item--sWH">
+                <span th:if="${kakaoUser == null}">
+                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=602aae5ad3313ff74c5927f83ea74b29&redirect_uri=http://localhost/user/login&response_type=code">
+                    </a>
+                </span>
+        카카오톡으로 간편로그인 하기
+        <br/>
+      </div>
+      <div class="item--uxm">
+        네이버로 간편로그인 하기
+        <br/>
+      </div>
+      <span th:if="${kakaoUser != null}">
+                <a href="https://kauth.kakao.com/oauth/logout?client_id=602aae5ad3313ff74c5927f83ea74b29&logout_redirect_uri=http://localhost/user/form">
+                    <input type="submit" value="로그아웃">
+                </a>
+        </form>
+        <div th:if="${kakaoUser != null}">로그인 중: 이메일=<span th:text="${kakaoUser}"></span> 이름=<span
+            th:text="${userNickname}"></span>
+                </div>
+            </span>
+    </div>
+  </div>
+</div>
+<script>
+  // 로그인 버튼을 눌렀을 때 실행되는 함수
+  function redirectToIndex() {
+    // 로그인 정보가 일치한다고 가정하고, 리디렉션 URL을 index.html로 설정
+    var redirectUrl = "index.html";
+
+    // 페이지를 리디렉션
+    window.location.href = redirectUrl;
+  }
+
+  // "회원가입하기" 텍스트 클릭 시 register.html로 이동
+  document.getElementById("goToRegister").addEventListener("click", function () {
+    window.location.href = '/member/join';
+  });
+</script>
+</body>
+</html>

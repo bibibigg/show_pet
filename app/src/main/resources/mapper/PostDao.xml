@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.show_pet.post.model.dao.PostDao">
+
+  <resultMap type="post" id="postMap">
+    <id column="post_id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="content" property="content"/>
+    <result column="hashtag" property="hashtag"/>
+    <result column="category" property="category"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="like_count" property="likeCount"/>
+
+    <association property="member" javaType="member">
+      <id column="member_id" property="id"/>
+      <result column="photo" property="photo"/>
+      <result column="nickname" property="nickName"/>
+    </association>
+    <collection property="attachedFiles" ofType="attachedFile">
+      <id column="file_id" property="id"/>
+      <result column="filepath" property="filePath"/>
+    </collection>
+  </resultMap>
+
+  <resultMap id="commentMap" type="Comment">
+    <id property="id" column="cmt_id"/>
+    <result property="content" column="content"/>
+  </resultMap>
+
+  <resultMap type="post" id="bookmarkMap">
+    <id column="post_id" property="id"/>
+    <result column="member_id" property="memberId"/>
+  </resultMap>
+
+  <resultMap type="attachedFile" id="attachedFileMap">
+    <id column="file_id" property="id"/>
+    <result column="filepath" property="filePath"/>
+    <result column="post_id" property="postId"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="post"
+          useGeneratedKeys="true" keyColumn="post_id" keyProperty="id">
+    insert into post(title,content,hashtag,category,member_id)
+    values(#{title},#{content},#{hashtag},#{category},#{member.id})
+  </insert>
+
+  <insert id="insertFiles" parameterType="post">
+    insert into file(filepath, post_id)
+    values
+    <foreach collection="attachedFiles" item="file" separator=",">
+      (#{file.filePath}, #{id})
+    </foreach>
+  </insert>
+
+  <select id="findBy" resultMap="postMap" parameterType="int">
+    select
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    m.photo,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath,
+    like_count
+    from
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    where
+    p.post_id=#{postId}
+  </select>
+
+  <select id="findAll" parameterType="int" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    m.photo,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath,
+    like_count
+    FROM
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    ORDER BY
+    p.post_id DESC
+  </select>
+
+  <select id="findEtc" parameterType="int" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath
+    FROM
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    where
+    p.category = 1
+    ORDER BY
+    p.post_id DESC;
+  </select>
+
+  <select id="findDog" parameterType="int" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    m.photo,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath
+    FROM
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    where
+    p.category = 2
+    ORDER BY
+    p.post_id DESC;
+  </select>
+
+  <select id="findCat" parameterType="int" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    m.photo,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath
+    FROM
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    where
+    p.category = 3
+    ORDER BY
+    p.post_id DESC;
+  </select>
+
+  <select id="findBird" parameterType="int" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    m.photo,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath
+    FROM
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    where
+    p.category = 4
+    ORDER BY
+    p.post_id DESC;
+  </select>
+
+  <select id="findFileBy" parameterType="int" resultMap="attachedFileMap">
+    SELECT
+    file_id,
+    filepath,
+    post_id
+    FROM
+    file
+    WHERE
+    file_id=#{id}
+  </select>
+
+  <select id="getMyPosts" resultMap="postMap">
+    select
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    p.title,
+    p.content,
+    p.hashTag,
+    p.created_at,
+    f.file_id,
+    f.filepath,
+    like_count
+    from
+    post p inner join member m on p.member_id=m.member_id
+    left outer join file f on p.post_id=f.post_id
+    where
+    p.member_id=#{memberId}
+    order by
+    p.post_id desc;
+  </select>
+
+  <delete id="deleteFile" parameterType="int">
+    delete from file
+    where
+    file_id=#{id}
+  </delete>
+
+  <delete id="deleteFiles" parameterType="int">
+    delete from file
+    where
+    post_id=#{postId}
+  </delete>
+
+  <update id="update" parameterType="post">
+    update post set
+    title=#{title},
+    content=#{content}
+    where
+    post_id=#{id}
+  </update>
+
+  <delete id="delete" parameterType="int">
+    delete from post
+    where
+    post_id=#{id}
+  </delete>
+
+  <delete id="deleteLikes" parameterType="int">
+    delete from like_list
+    where
+    post_id=#{postId}
+  </delete>
+
+  <delete id="deleteBookmarks" parameterType="int">
+    delete from bookmark_list
+    where
+    post_id=#{postId}
+  </delete>
+
+  <update id="updateLikeCount">
+    UPDATE
+    post
+    SET
+    like_count = like_count + #{amount}
+    WHERE
+    post_id = #{postId}
+  </update>
+
+  <insert id="insertLike">
+    INSERT INTO
+    like_list (post_id, member_id)
+    VALUES (#{postId}, #{memberId})
+  </insert>
+
+  <delete id="deleteLike">
+    DELETE FROM
+    like_list
+    WHERE
+    post_id = #{postId} AND member_id = #{memberId}
+  </delete>
+
+  <select id="isLiked" resultType="boolean">
+    SELECT
+    COUNT(*)
+    FROM like_list
+    WHERE
+    post_id = #{postId} AND member_id = #{memberId}
+  </select>
+
+  <select id="getLikeCount" resultType="int">
+    SELECT
+    COUNT(*)
+    FROM
+    like_list
+    WHERE
+    post_id = #{postId}
+  </select>
+
+  <select id="getLikedPosts" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    p.title,
+    p.content,
+    p.hashtag,
+    p.created_at,
+    f.file_id,
+    f.filepath
+    FROM
+    post p
+    JOIN like_list l ON p.post_id = l.post_id
+    JOIN member m ON p.member_id = m.member_id
+    LEFT JOIN file f ON p.post_id = f.post_id
+    WHERE
+    l.member_id = #{memberId}
+    ORDER BY
+    p.post_id DESC
+  </select>
+
+  <insert id="insertBookmark" parameterType="map">
+    INSERT INTO bookmark_list (post_id, member_id)
+    VALUES (#{postId}, #{memberId})
+    ON DUPLICATE KEY UPDATE
+    post_id = VALUES(post_id), member_id = VALUES(member_id);
+  </insert>
+
+
+  <delete id="deleteBookmark">
+    DELETE FROM
+    bookmark_list
+    WHERE
+    post_id = #{postId} AND member_id = #{memberId}
+  </delete>
+
+  <select id="isBookmarked" resultType="boolean">
+    SELECT
+    COUNT(*)
+    FROM bookmark_list
+    WHERE
+    post_id = #{postId} AND member_id = #{memberId}
+  </select>
+
+  <select id="getBookmarkedPosts" resultMap="postMap">
+    SELECT
+    p.post_id,
+    m.nickname,
+    m.member_id,
+    p.title,
+    p.content,
+    p.hashtag,
+    p.created_at,
+    f.file_id,
+    f.filepath
+    FROM
+    post p
+    JOIN bookmark_list b ON p.post_id = b.post_id
+    JOIN member m ON p.member_id = m.member_id
+    LEFT JOIN file f ON p.post_id = f.post_id
+    WHERE
+    b.member_id = #{memberId}
+    ORDER BY
+    p.post_id DESC
+  </select>
+
+  <!--댓글 쿼리-->
+  <select id="findCommentsByPostId" resultMap="commentMap">
+    SELECT c.*, m.nickname as commenter
+    FROM post_comment c
+    JOIN member m ON c.member_id = m.member_id
+    WHERE post_id = #{postId}
+    ORDER BY created_at DESC
+  </select>
+
+  <insert id="insertComment">
+    INSERT INTO post_comment (post_id, member_id, content) VALUES (#{postId}, #{memberId}, #{content})
+  </insert>
+
+  <delete id="deleteComment">
+    DELETE FROM post_comment WHERE cmt_id = #{commentId} AND member_id = #{memberId}
+  </delete>
+
+
+</mapper>

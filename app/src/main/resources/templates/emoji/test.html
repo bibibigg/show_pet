@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Add some basic styling for the modal and emoji list -->
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: -120px;
+            top: 13%;
+            width: 50%; /* Full width */
+            height: 50%; /* Full height */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* 크기 조절 */
+            height: 60vh; /* 높이를 화면 높이의 60%로 조절 */
+            overflow-y: auto; /* 내용이 넘칠 때 스크롤 허용 */
+        }
+
+        /* Close Button */
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover, .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .selected-emoji-item {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .selected-emoji-image {
+            width: 30px;
+            height: auto;
+        }
+
+        .emoji-count {
+            font-size: 15px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        /* Emoji List Grid Style*/
+        #emoji-list {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr); /* 변경된 부분 */
+            gap: 10px;
+            justify-items: center; /* 가운데 정렬을 추가했습니다. */
+        }
+
+        /* Emoji Image Size*/
+        #emoji-list img {
+            width: 25px;
+            height: auto;
+        }
+
+        #emoji-search {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 10px;
+            font-size: 16px;
+        }
+
+        /* Style for selected emoji and count */
+        #selected-emoji span {
+            margin-right: 5px;
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+<body>
+<button id="emoji-picker">Open Emoji Picker</button>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <input type="text" id="emoji-search" placeholder="Search...">
+        <div id='emoji-list'>
+            <!-- Loop through the list of emojis from the database -->
+            <th:block th:each="emoji : ${getAll}">
+                <img th:id="${'emoji-' + emoji.id}"
+                     th:title="${emoji.emojiName}"
+                     th:data-name="${emoji.emojiName}"
+                     th:data-url="${emoji.emojiUrl}"
+                     onclick="selectEmoji(this)"
+                     th:src="${emoji.emojiUrl}"/>
+            </th:block>
+        </div>
+    </div>
+</div>
+<div id="emoji-display">
+    <span id="selected-emoji"></span>
+</div>
+<div id="emoji-count"></div>
+
+<script type="text/javascript">
+
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("emoji-picker");
+    var span = document.getElementsByClassName("close")[0];
+    var searchInput = document.getElementById("emoji-search");
+    var selectedEmojiContainer = document.getElementById("selected-emoji");
+    var emojiCounts = {}; // 이모지 카운트를 저장할 객체
+    var emojiListDiv = document.getElementById('emoji-list');
+    emojiListDiv.style.overflowY = 'auto';
+
+    btn.onclick = function () {
+        fetch('/emoji/test')  // 수정된 부분: 요청 주소 변경
+            .then(response => response.json())
+            .then(data => {
+                var emojiListDiv = document.getElementById('emoji-list');
+                emojiListDiv.innerHTML = '';
+
+                data.forEach(function (emoji) {
+                    var emojiElement = document.createElement('img');
+                    emojiElement.id = 'emoji-' + emoji.id;
+                    emojiElement.title = emoji.emojiName;
+                    emojiElement.setAttribute('data-name', emoji.emojiName);
+                    emojiElement.setAttribute('data-url', emoji.emojiUrl);
+                    emojiElement.src = emoji.emojiUrl;
+                    emojiElement.onclick = function () {
+                        selectEmoji(this);
+                    };
+                    emojiListDiv.appendChild(emojiElement);
+                });
+
+            })
+            .catch(error => console.error('Error:', error));
+        modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    searchInput.addEventListener("input", function () {
+        var searchTerm = searchInput.value.toLowerCase();
+        var emojis = document.querySelectorAll("#emoji-list img");
+
+        emojis.forEach(function (emoji) {
+            var emojiName = emoji.getAttribute("data-name").toLowerCase();
+            if (emojiName.includes(searchTerm)) {
+                emoji.style.display = "inline-block";
+            } else {
+                emoji.style.display = "none";
+            }
+        });
+
+        resetGridLayout();
+    });
+
+    function resetGridLayout() {
+        var emojis = document.querySelectorAll("#emoji-list img");
+        emojis.forEach(function (emoji, index) {
+            emoji.style.gridColumnStart = index % 5 + 1;
+            emoji.style.gridRowStart = Math.floor(index / 5) + 1;
+        });
+    }
+
+    function selectEmoji(element) {
+        var name = element.getAttribute('data-name');
+        var url = element.getAttribute('data-url');
+        var emojiId = element.getAttribute('id');
+
+        if (emojiCounts[name]) {
+            emojiCounts[name]++;
+            var selectedEmojiItem = document.querySelector(`.selected-emoji-item[data-name="${name}"]`);
+            var emojiCountElement = selectedEmojiItem.querySelector('.emoji-count');
+            emojiCountElement.textContent = emojiCounts[name];
+        } else {
+            if (Object.keys(emojiCounts).length >= 5) {
+                alert("이모티콘은 최대 5개까지에요!");
+                return;
+            }
+            emojiCounts[name] = 1;
+
+            var selectedEmojiItem = document.createElement('div');
+            selectedEmojiItem.classList.add('selected-emoji-item');
+            selectedEmojiItem.dataset.name = name;
+            selectedEmojiItem.innerHTML = `
+            <img src="${url}" alt="${name}" class="selected-emoji-image">
+            <span class="emoji-count">${emojiCounts[name]}</span>
+        `;
+            selectedEmojiContainer.appendChild(selectedEmojiItem);
+        }
+    }
+</script>
+
+
+</body>
+</html>

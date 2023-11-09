@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <title>ShowPet : Edit profile</title>
+  <script src="/js/header.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One%3A400"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee%3A400"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins%3A700"/>
+  <link rel="stylesheet" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" th:href="@{/css/memberDetail.css}"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/modal.css}"/>
+</head>
+<body>
+
+
+<div data-th-replace="postlistheader :: postlistheader"></div>
+
+<h1>프로필 수정</h1>
+<p data-th-unless="${member}">해당 번호의 회원이 없습니다!</p>
+<form data-th-if="${member}" data-th-action="@{/member/update}" method='post'
+      enctype='multipart/form-data'>
+  <input type="hidden" name="id" data-th-value="${member.id}">
+  <div class="update-container">
+    <div class="profile-container">
+      <div class="profile-round-image">
+        <img data-th-unless="${member.photo}" src='/images/avatar.png'>
+        <img
+            data-th-src="|https://kr.object.ncloudstorage.com/bitcamp-nc7-bucket-16/member/${member.photo}|">
+      </div>
+      <input type="file" id="fileInput" name='photofile' accept="image/*"
+             onchange="previewImage(this);">
+      <div class="upload-container">
+        <div id="imagePreview"></div>
+        <label for="fileInput" class="edit-profile-button">사진변경</label>
+      </div>
+      <script th:src="@{/js/PreviewImage.js}"></script>
+    </div>
+    <label class="intro-text" for="myTextarea">소개글</label>
+    <textarea class="text-box" id="myTextarea" name="intro" data-th-value="${member.intro}"
+              th:text="${member.intro}"
+              placeholder="최대 글자수는 50자로 제한됩니다"></textarea>
+    <script th:src="@{/js/TextArea.js}"></script>
+    <br>
+    <label class="text" for="password">비밀번호</label>
+    <input class="password-box" type="password" id="password" name="password"
+           placeholder="변경할 비밀번호 또는 기존 비밀번호를 입력해주세요">
+
+    <br>
+    <label class="text" for="nickname">닉네임</label>
+    <input class="input-box" type="text" id="nickname" name="nickName"
+           data-th-value="${member.nickName}">
+
+    <br>
+    <label class="text" for="tel">휴대폰 번호</label>
+    <input class="input-box" type="text" id="tel" name="tel" data-th-value="${member.tel}">
+
+    <label class="text" for="nickname">선호동물 변경</label>
+    <select class="pet-category" id="petName" name='category'>
+      <option value='2'>강아지</option>
+      <option value='3'>고양이</option>
+      <option value='4'>새</option>
+      <option value='1'>기타</option>
+    </select>
+
+    <button type="submit" class="button-box" id="submitBtn">변경확인</button>
+
+  </div>
+  <div class="reset-container">
+    <button type='reset' class="reset-button" onclick="resetPreviewImage()">초기화</button>
+    <script th:src="@{/js/ResetPreviewImage.js}"></script>
+    <button type="button" class="reset-button" onclick="goToMainPage()">메인</button>
+    <script th:src="@{/js/GoToMainpage.js}"></script>
+  </div>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var passwordInput = document.getElementById('password');
+    var submitButton = document.getElementById('submitBtn');
+
+    submitButton.addEventListener('click', function (event) {
+      if (passwordInput.value === '') {
+        event.preventDefault();
+        alert('비밀번호를 입력하세요.');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+/* CSS (profile.css) */
+.profile-align, .profile-align2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-count {
+  cursor: pointer;
+  font-size: 20px;
+  display: inline;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: #000000;
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.member-round-image {
+  text-align: center;
+}
+
+.member-round-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-edit {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.post-list {
+  margin-top: 20px;
+}
+
+.post-list img {
+  max-width: 100%;
+  height: auto;
+}
+
+.post-list .card {
+  margin-bottom: 20px;
+}
+
+
+a {
+  color: #ffffff !important; /* 링크 색상을 원하는 색상으로 지정 */
+  text-decoration: none !important;; /* 밑줄 제거 */
+}
+
+.square-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 열을 가진 그리드 생성 */
+  grid-gap: 5px; /* 그리드 아이템 간 간격 설정 */
+}
+
+.square-box img {
+  width: 100%; /* 이미지를 부모 요소에 맞게 가득 채우도록 설정 */
+  height: 100%; /* 이미지를 부모 요소에 맞게 가득 채우도록 설정 */
+  object-fit: cover; /* 이미지 비율 유지하며 가득 채우도록 설정 */
+}
+
+.my-profile-button {
+  background-color: #504e4d;
+  border: none;
+  color: white;
+  width: 650px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+  font-size: 16px !important;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* 호버 효과를 부드럽게 만들기 위한 트랜지션 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+.my-profile-button:hover {
+  background-color: #f05400; /* 호버 시 배경색 변경 */
+  transform: translateY(-2px); /* 버튼을 아래로 조금 이동하여 돌출 효과 */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강화 */
+}
+.my-profile-button:active {
+  transform: translateY(0); /* 다시 원래 위치로 돌아가게 함 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 더 가벼운 그림자 효과 */
+}
+
+.my-button {
+  background-color: #504e4d;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* 호버 효과를 부드럽게 만들기 위한 트랜지션 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.my-button:hover {
+  background-color: #f05400; /* 호버 시 배경색 변경 */
+  transform: translateY(-2px); /* 버튼을 아래로 조금 이동하여 돌출 효과 */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강화 */
+}
+
+.my-button:active, .my-button:focus {
+  transform: translateY(0); /* 다시 원래 위치로 돌아가게 함 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 더 가벼운 그림자 효과 */
+}
+
+
+.profile-round-image {
+  border-radius: 50%; /* 동그라미 모양으로 만듭니다. */
+  overflow: hidden; /* 넘치는 부분을 숨깁니다. */
+  width: 200px ; /* 이미지의 너비 조정 */
+  height: 200px; /* 이미지의 높이 조정 */
+  margin-bottom: 10px;
+  margin-left: auto; /* 가운데 정렬을 위해 왼쪽 여백을 자동으로 설정 */
+  margin-right: auto; /* 가운데 정렬을 위해 오른쪽 여백을 자동으로 설정 */
+}
+
+.profile-round-image img {
+  width: 100%; /* 이미지를 박스에 꽉 채우도록 설정합니다. */
+  height: 100%; /* 이미지를 박스에 꽉 채우도록 설정합니다. */
+  object-fit: cover; /* 이미지 비율을 유지하면서 박스에 맞춥니다. */
+}
+
+.profile-container {
+  margin-top: 100px;
+  text-align: center;
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.my-follow-container {
+  margin-top: 20px;
+}
+
+.my-follow-container2 {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-weight: bold; /* 텍스트 굵기를 두껍게 설정 */
+  font-family: Poppins, sans-serif;
+}
+
+
+.image-thumbnail {
+  height: 400px; /* 원하는 높이로 설정 */
+  object-fit: cover;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.35;
+}
+
+.followButton {
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin-bottom: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+}
+
+.follow-info {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 정렬 */
+}
+
+.follow-info p:nth-child(2) {
+  margin-left: 0px; /* | 글자의 왼쪽에 간격 추가 */
+  margin-right: 10px; /* | 글자의 오른쪽에 간격 추가 */
+}
+
+.followImage {
+  width: 130px !important;
+  height: 40px !important;
+}

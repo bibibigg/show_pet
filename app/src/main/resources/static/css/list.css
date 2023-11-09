@@ -1,0 +1,45 @@
+.image-thumbnail {
+    height: 400px; /* 원하는 높이로 설정 */
+    object-fit: cover;
+}
+
+.square-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3개의 열을 가진 그리드 생성 */
+    grid-gap: 5px; /* 그리드 아이템 간 간격 설정 */
+}
+
+.square-box img {
+    width: 100%; /* 이미지를 부모 요소에 맞게 가득 채우도록 설정 */
+    height: 100%; /* 이미지를 부모 요소에 맞게 가득 채우도록 설정 */
+    object-fit: cover; /* 이미지 비율 유지하며 가득 채우도록 설정 */
+}
+
+.button {
+    background-color: #504e4d;
+    border: none;
+    color: white;
+    width: 120px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    font-size: 16px !important;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* 호버 효과를 부드럽게 만들기 위한 트랜지션 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.button:hover {
+    background-color: #f05400; /* 호버 시 배경색 변경 */
+    transform: translateY(-2px); /* 버튼을 아래로 조금 이동하여 돌출 효과 */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강화 */
+}
+
+/* 선택한 버튼을 누르고 있을 때 더 깊게 들어간 느낌을 주기 위한 스타일 */
+.button:active {
+    transform: translateY(0); /* 다시 원래 위치로 돌아가게 함 */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 더 가벼운 그림자 효과 */
+}

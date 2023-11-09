@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>인증번호 요청</title>
+</head>
+<body>
+<h1>인증번호 요청</h1>
+
+<form action="/sms/send" method="POST">
+  <label for="phoneNumber">전화번호:</label>
+  <input type="text" id="phoneNumber" name="to" placeholder="전화번호 입력" required>
+  <button type="submit">인증번호 요청</button>
+</form>
+</body>
+</html>

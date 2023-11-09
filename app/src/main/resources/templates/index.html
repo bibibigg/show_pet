@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>show_pet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<h1>show_pet 실행되었어요!</h1>
+
+<div>
+  <a href='/member/login'>회원</a>
+  <a href='/post/list'>게시글</a>
+  <a data-th-if="${session.loginUser == null}" href='/member/form'>로그인</a>
+  <a href='/member/join'>회원가입</a>
+  <div style="display:inline;" data-th-if="${session.loginUser != null}">
+    <span data-th-text="${session.loginUser.getNickName()}"></span>
+    <a href='/member/logout'>로그아웃</a>
+  </div>
+</div>
+</body>
+</html>

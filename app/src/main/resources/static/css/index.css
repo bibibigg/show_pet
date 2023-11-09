@@ -1,0 +1,6 @@
+body {
+  width: 1440px;
+  height: 900px;
+  margin: 150px auto 0; /* 상단 여백을 100px로 설정하고 페이지를 가운데 정렬 */
+  background-color: #ffffff; /* 배경색은 원하는 색상으로 설정하세요 */
+}
